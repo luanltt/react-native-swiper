@@ -355,6 +355,10 @@ export default class extends Component {
    * @param  {object} e native event
    */
   onScrollEnd = e => {
+    if (!e.nativeEvent.contentOffset) {
+      return;
+    }
+    
     // update scroll state
     this.internals.isScrolling = false
 
