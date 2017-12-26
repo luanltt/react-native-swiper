@@ -329,6 +329,12 @@ export default class extends Component {
 
     this.autoplayTimer && clearTimeout(this.autoplayTimer)
     this.autoplayTimer = setTimeout(() => {
+      if (typeof this.internals.offset === "undefined") {
+        this.autoplay();
+
+        return;
+      }
+      
       if (!this.props.loop && (
           this.props.autoplayDirection
             ? this.state.index === this.state.total - 1
@@ -355,10 +361,6 @@ export default class extends Component {
    * @param  {object} e native event
    */
   onScrollEnd = e => {
-    if (!e.nativeEvent.contentOffset) {
-      return;
-    }
-    
     // update scroll state
     this.internals.isScrolling = false
 
