@@ -197,6 +197,17 @@ export default class extends Component {
     if (nextProps.index === this.props.index && nextProps.children.length !== this.props.children.length) return;
     if (!nextProps.autoplay && this.autoplayTimer) clearTimeout(this.autoplayTimer)
     
+    if (this.props.width !== nextProps.width) {
+      this.onLayout({
+        nativeEvent: {
+          layout: {
+            width: nextProps.width,
+            height: nextProps.height
+          }
+        }
+      });
+    }
+    
     const state = this.initState(nextProps, this.props.index !== nextProps.index);
     if (typeof state.offset !== "undefined") {
       delete state.offset;
@@ -206,6 +217,17 @@ export default class extends Component {
   }
 
   componentDidMount () {
+    if (this.props.width) {
+      this.onLayout({
+        nativeEvent: {
+          layout: {
+            width: this.props.width,
+            height: this.props.height
+          }
+        }
+      });
+    }
+    
     this.autoplay()
   }
 
