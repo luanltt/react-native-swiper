@@ -196,7 +196,7 @@ export default class extends Component {
   componentWillReceiveProps (nextProps) {
     if (nextProps.index === this.props.index && nextProps.children.length !== this.props.children.length) return;
     if (!nextProps.autoplay && this.autoplayTimer) clearTimeout(this.autoplayTimer)
-    
+
     if (this.props.width !== nextProps.width) {
       this.onLayout({
         nativeEvent: {
@@ -207,7 +207,7 @@ export default class extends Component {
         }
       });
     }
-    
+
     const state = this.initState(nextProps, this.props.index !== nextProps.index);
     if (typeof state.offset !== "undefined") {
       delete state.offset;
@@ -227,7 +227,7 @@ export default class extends Component {
         }
       });
     }
-    
+
     this.autoplay()
   }
 
@@ -303,7 +303,7 @@ export default class extends Component {
     const offset = this.internals.offset = {}
     const state = { width, height }
 
-    if (this.state.total > 1 || this.props.width) {
+    if (this.state.total > 1 || (this.props.width && 1 !== this.state.total)) {
       let setup = this.state.index
       if (this.props.loop) {
         setup++
@@ -323,7 +323,7 @@ export default class extends Component {
     // contentOffset is not working in react 0.48.x so we need to use scrollTo
     // to emulate offset.
     if (Platform.OS === 'ios') {
-      if (this.initialRender && (this.state.total > 1 || this.props.width)) {
+      if (this.initialRender && (this.state.total > 1 || (this.props.width && 1 !== this.state.total))) {
         this.scrollView.scrollTo({...offset, animated: false})
         this.initialRender = false;
       }
@@ -356,7 +356,7 @@ export default class extends Component {
 
         return;
       }
-      
+
       if (!this.props.loop && (
           this.props.autoplayDirection
             ? this.state.index === this.state.total - 1
